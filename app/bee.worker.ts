@@ -5,6 +5,12 @@ module.exports = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
+        // Harvest energy
+        // Transfer energy
+        // Upgrade controller
+        // Build structures
+        // Repair structures
+
         if(creep.carry.energy < creep.carryCapacity) {
             let sources = creep.room.find(FIND_SOURCES);
             if(creep.harvest(sources[0]) === ERR_NOT_IN_RANGE) {

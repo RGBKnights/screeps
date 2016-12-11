@@ -14,5 +14,5 @@ module.exports.loop = function () {
     // Create Work Orders
     // Update Work Orders
     // Process Work Orders
-
+    hive.processWorkers();
 }
