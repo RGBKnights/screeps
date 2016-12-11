@@ -17,7 +17,7 @@
     ],
     "no-arg": true,
     "no-bitwise": true,
-    "no-console": [true,
+    "no-console": [false,
       "debug",
       "info",
       "time",

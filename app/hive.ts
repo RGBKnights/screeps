@@ -13,6 +13,15 @@ module.exports = {
             }
         }
     },
+    createWorkers: function(limit) {
+        let size = _(Game.creeps).size();
+        if(size < limit) {
+            let result = Game.spawns["W8N6-1"].createCreep([WORK,CARRY,MOVE], null);
+            if(_.isString(result)) {
+                console.log("Spawning:" + result);
+            }
+        }
+    },
     processWorkers: function() {
         _.forEach(Game.creeps, function(creep) {
             woker.run(creep);

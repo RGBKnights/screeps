@@ -6,13 +6,12 @@ import * as lodash from "lodash";
 let hive = require("hive");
 
 module.exports.loop = function () {
-    // Cleanup Mem.
+    // Cleanup hive
     hive.reset();
 
-    // Update Hive State
+    // Create new workers if needed
+    hive.createWorkers(5);
 
-    // Create Work Orders
-    // Update Work Orders
-    // Process Work Orders
+    // Process Workers
     hive.processWorkers();
-}
+};
