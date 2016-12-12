@@ -12,11 +12,17 @@ module.exports = {
                 delete Memory.creeps[i];
             }
         }
+
+        for(let i in Memory.rooms) {
+            if(!Game.rooms[i]) {
+                delete Memory.rooms[i];
+            }
+        }
     },
     createWorkers: function(limit) {
         let size = _(Game.creeps).size();
         if(size < limit) {
-            let result = Game.spawns["W8N6-1"].createCreep([WORK,CARRY,MOVE], null);
+            let result = Game.spawns["Spawn1"].createCreep([WORK,CARRY,MOVE], null, { state: 0 });
             if(_.isString(result)) {
                 console.log("Spawning:" + result);
             }
