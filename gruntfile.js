@@ -7,11 +7,11 @@ module.exports = function (grunt) {
                 force: true
             },
             preBuild: ['dist'],
-            postBuild: ['app\\.baseDir.ts', 'dist\\.baseDir.js', screepsDirectory + '\\**']
+            postBuild: ['src\\.baseDir.ts', 'dist\\.baseDir.js', screepsDirectory + '\\**']
         },
         ts: {
             default : {
-                src: ["app\\**\\*.ts"],
+                src: ["src\\**\\*.ts"],
                 outDir: 'dist\\',
                 options: {
                     target: 'es5',
