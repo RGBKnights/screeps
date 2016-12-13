@@ -18,12 +18,13 @@ module.exports = {
         // Harvest energy
         if(creep.memory.state === creepState.pending && creep.carry.energy === 0) {
             creep.memory.state = creepState.harvesting;
-            creep.say("harvest");
+            //creep.say("harvest");
         }
         if(creep.memory.state === creepState.harvesting) {
             if(creep.carry.energy < creep.carryCapacity) {
                 let sources = creep.room.find(FIND_SOURCES);
-                if(creep.harvest(sources[0]) === ERR_NOT_IN_RANGE) {
+                let result = creep.harvest(sources[0]);
+                if(result === ERR_NOT_IN_RANGE) {
                     if(creep.moveTo(sources[0]) === ERR_NO_PATH) {
                         let closetCreep = creep.pos.findClosestByRange(FIND_MY_CREEPS, {
                             filter: function(c) {
@@ -38,6 +39,8 @@ module.exports = {
                             }
                         }
                     }
+                } else if (result === ERR_NOT_ENOUGH_RESOURCES) {
+                    creep.memory.state = creepState.pending;
                 }
             } else {
                 creep.memory.state = creepState.pending;
@@ -49,17 +52,21 @@ module.exports = {
         // Transfer energy
         let structuresNeedingEngery = creep.room.find(FIND_STRUCTURES, {
             filter: (structure: any) => {
-                return structure.energy < structure.energyCapacity;
+                if(structure.structureType === STRUCTURE_TOWER) {
+                    return structure.energy < ( structure.energyCapacity * 0.5);
+                } else {
+                    return structure.energy < structure.energyCapacity;
+                }
             }
         });
         if(creep.memory.state === creepState.pending && structuresNeedingEngery.length > 0) {
             creep.memory.state = creepState.transfering;
-            creep.say("transfer");
+            //creep.say("transfer");
         }
         if(creep.memory.state === creepState.transfering)
         {
             if(creep.carry.energy > 0) {
-                structuresNeedingEngery.sort((a,b) => a.energy - b.energy);
+                structuresNeedingEngery.sort((a,b) => a.energyCapacity - b.energyCapacity);
 
                 let result = creep.transfer(structuresNeedingEngery[0], RESOURCE_ENERGY);
                 if(result === ERR_NOT_IN_RANGE) {
@@ -78,13 +85,16 @@ module.exports = {
         let constructionSites = creep.room.find(FIND_CONSTRUCTION_SITES);
         if(creep.memory.state === creepState.pending && constructionSites.length > 0) {
             creep.memory.state = creepState.building;
-            creep.say("build");
+            //creep.say("build");
         }
-        if(creep.memory.state === creepState.building)
-        {
+        if(creep.memory.state === creepState.building) {
             if(creep.carry.energy > 0) {
+                constructionSites.sort((a,b) => a.progress - b.progress);
+
                 if(creep.build(constructionSites[0]) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(constructionSites[0]);
+                } else {
+                    creep.memory.state = creepState.pending;
                 }
             } else {
                 creep.memory.state = creepState.pending;
@@ -94,12 +104,15 @@ module.exports = {
         }
 
         // Repair structures
+        /*
         let structuresNeedingRepair = creep.room.find(FIND_STRUCTURES, {
-            filter: object => object.hits < object.hitsMax
+            filter: (structure: any) => {
+                return structure.hits < structure.hitsMax;
+            }
         });
         if(creep.memory.state === creepState.pending && structuresNeedingRepair.length > 0) {
             creep.memory.state = creepState.repairing;
-            creep.say("repair");
+            //creep.say("repair");
         }
         if(creep.memory.state === creepState.repairing)
         {
@@ -115,11 +128,12 @@ module.exports = {
 
             return;
         }
+        */
 
         // Upgrade controller
         if(creep.memory.state === creepState.pending && creep.carry.energy > 0) {
             creep.memory.state = creepState.upgrading;
-            creep.say("upgrade");
+            //creep.say("upgrade");
         }
         if(creep.memory.state === creepState.upgrading) {
             if(creep.carry.energy > 0) {

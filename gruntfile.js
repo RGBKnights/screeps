@@ -1,20 +1,18 @@
 module.exports = function (grunt) {
-    var screepsDirectory = 'C:/Users/Jamie Webster/AppData/Local/Screeps/scripts/127_0_0_1___21025/default';
+    var screepsDirectory = process.env.LOCALAPPDATA + '\\Screeps\\scripts\\127_0_0_1___21025\\default';
 
     grunt.initConfig({
-        remove: {
-            preBuild: {
-                dirList: ['dist/*']
+        clean: {
+            options: {
+                force: true
             },
-            postBuild: {
-                fileList: ['app/.baseDir.ts', 'dist/.baseDir.js'],
-                dirList: [screepsDirectory]
-            }
+            preBuild: ['dist'],
+            postBuild: ['app\\.baseDir.ts', 'dist\\.baseDir.js', screepsDirectory + '\\**']
         },
         ts: {
             default : {
-                src: ["app/**/*.ts"],
-                outDir: 'dist/',
+                src: ["app\\**\\*.ts"],
+                outDir: 'dist\\',
                 options: {
                     target: 'es5',
                     sourceMap: false,
@@ -23,6 +21,7 @@ module.exports = function (grunt) {
         },
         copy: {
             default: {
+                force: true,
                 expand: true,
                 cwd: 'dist',
                 src: '**',
@@ -31,9 +30,9 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.registerTask("build", ['remove:preBuild', 'ts:default', 'remove:postBuild', 'copy:default']);
+    grunt.registerTask("build", ['clean:preBuild', 'ts:default', 'clean:postBuild', 'copy:default']);
 
-    grunt.loadNpmTasks('grunt-remove');
+    grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks("grunt-ts");
 };
