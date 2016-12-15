@@ -20,18 +20,23 @@ module.exports = {
         }
     },
     checkControllerState: function() {
-        if(Game.rooms["W8N6"].controller.ticksToDowngrade < 1000) {
-            Game.creeps[0].memory.state = 5;
+        let controller = Game.rooms["W8N6"].controller;
+        if(controller.ticksToDowngrade < 1000) {
+             let creep = Game.rooms["W8N6"].find(FIND_MY_CREEPS)[0];
+             if(creep) {
+                creep.memory.state = 5;
+             }
         }
     },
     createWorkers: function(limit) {
         let body1 = [WORK,CARRY,MOVE];
         let body2 = [WORK,WORK,CARRY,CARRY,MOVE,MOVE];
         let body3 = [WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
+        let body4 = [WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
 
         let size = _(Game.creeps).size();
         if(size < limit) {
-            let result = Game.spawns["Spawn1"].createCreep(body2, null, { state: 0 });
+            let result = Game.spawns["Spawn1"].createCreep(body4, null, { state: 0 });
             if(_.isString(result)) {
                 console.log("Spawning:" + result);
             }

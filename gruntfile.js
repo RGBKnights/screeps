@@ -1,13 +1,11 @@
 module.exports = function (grunt) {
-    var screepsDirectory = process.env.LOCALAPPDATA + '\\Screeps\\scripts\\127_0_0_1___21025\\default';
+    var screepsDirectory = process.env.LOCALAPPDATA + '\\Screeps\\scripts\\99_224_226_247___21025\\default\\';
+    console.log(screepsDirectory);
 
     grunt.initConfig({
         clean: {
-            options: {
-                force: true
-            },
             preBuild: ['dist'],
-            postBuild: ['src\\.baseDir.ts', 'dist\\.baseDir.js', screepsDirectory + '\\**']
+            postBuild: ['src\\.baseDir.ts', 'dist\\.baseDir.js']
         },
         ts: {
             default : {
@@ -21,7 +19,6 @@ module.exports = function (grunt) {
         },
         copy: {
             default: {
-                force: true,
                 expand: true,
                 cwd: 'dist',
                 src: '**',
