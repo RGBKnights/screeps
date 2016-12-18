@@ -65,7 +65,7 @@ module.exports = {
             filter: (structure: any) => {
                 if(structure.structureType === STRUCTURE_TOWER) {
                     let tower = structure as StructureTower;
-                    return tower.energy < ( tower.energyCapacity * 0.5);
+                    return tower.energy < ( tower.energyCapacity * 0.10);
                 } else if(structure.structureType === STRUCTURE_SPAWN) {
                     let spawn = structure as StructureSpawn;
                     return spawn.energy < spawn.energyCapacity;
@@ -81,8 +81,7 @@ module.exports = {
             creep.memory.state = creepState.transfering;
             creep.say("transfer");
         }
-        if(creep.memory.state === creepState.transfering)
-        {
+        if(creep.memory.state === creepState.transfering) {
             if(creep.carry.energy === 0) {
                 creep.memory.state = creepState.pending;
                 return;
@@ -113,13 +112,14 @@ module.exports = {
                 return;
             }
 
-            constructionSites.sort((a,b) => (a.progress/a.progressTotal) - (b.progress/b.progressTotal));
+            // constructionSites.sort((a,b) => (a.progress/a.progressTotal) - (b.progress/b.progressTotal));
+            let closest = creep.pos.findClosestByRange(constructionSites);
 
-            let result = creep.build(constructionSites[0]);
+            let result = creep.build(closest);
             if (result === OK) {
                 return;
             } else if(result === ERR_NOT_IN_RANGE) {
-                creep.moveTo(constructionSites[0]);
+                creep.moveTo(closest);
             } else {
                 creep.memory.state = creepState.pending;
             }
