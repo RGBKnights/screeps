@@ -12,17 +12,8 @@ module.exports = {
                 delete Memory.creeps[i];
             }
         }
-        
-        // Room Memory?
-        /*
-        for(let i in Memory.rooms) {
-            if(!Game.rooms[i]) {
-                delete Memory.rooms[i];
-            }
-        }
-        */
     },
     loop: function() {
-
+        
     }
 };
