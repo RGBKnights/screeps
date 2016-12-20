@@ -5,8 +5,30 @@ module.exports = {
     getBody: function(): Array<BodyPartType> {
         // 300 = 100, 50, 50, 50, 50
         return [WORK, CARRY, CARRY, MOVE, MOVE];
-    }
+    },
+    getName: function(): string {
+        return "worker";
+    },
+    shouldSpawn: function(room:Room,  count): boolean {
+        if(!room.controller) {
+            return false;
+        }
+
+        if(!room.controller.my) {
+            return false;
+        }
+
+        if(room.controller.level > 1) {
+            return false;
+        }
+
+        if(count > room.memory.totals.sources) {
+            return false;
+        }
+
+        return true;
+    },
     run: function(creep: Creep) {
-        
+        return;
     }
 };
