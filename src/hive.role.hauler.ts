@@ -12,6 +12,15 @@ module.exports = {
     shouldSpawn: function(room:Room, count): boolean {
         return false;
     },
+    spawnUnit: function(body: Array<BodyPartType>, room: Room, spawns:Spawn, sources:Source, creeps:Array<Creep>) {
+        let spawn = _.first(spawns);
+        if(spawn) {
+            let result = spawn.canCreateCreep(body, null);
+            if(result === OK) {
+                spawn.createCreep(body, null, { role: role.getName() });
+            }
+        }
+    }
     run: function(creep: Creep) {
         return;
     }

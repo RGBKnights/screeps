@@ -33,14 +33,8 @@ function proccessRoom(room:Room, roles:any) {
             }
 
             if(role.shouldSpawn(room, count)) {
-                let spawn = _.first(spawns);
-                if(spawn) {
-                    let body = role.getBody();
-                    let result = spawn.canCreateCreep(body, null);
-                    if(result === OK) {
-                        spawn.createCreep(body, null, { role: role.getName() });
-                    }
-                }
+                let body = role.getBody();
+                let creep = role.spawnUnit(body, room, spawns, sources, creeps);
             }
         }
     }

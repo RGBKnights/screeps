@@ -10,8 +10,21 @@ module.exports = {
         return "minner";
     },
     shouldSpawn: function(room:Room, count): boolean {
-        return false;
+        if(count > room.memory.totals.sources) {
+            return false;
+        }
+
+        return true;
     },
+    spawnUnit: function(body: Array<BodyPartType>, room: Room, spawns:Spawn, sources:Source, creeps:Array<Creep>) {
+        let spawn = _.first(spawns);
+        if(spawn) {
+            let result = spawn.canCreateCreep(body, null);
+            if(result === OK) {
+                spawn.createCreep(body, null, { role: role.getName() });
+            }
+        }
+    }
     run: function(creep: Creep) {
         return;
     }
