@@ -10,7 +10,23 @@ module.exports = {
         return "upgrader";
     },
     shouldSpawn: function(room:Room, count): boolean {
-        return false;
+        if(!room.controller) {
+            return false;
+        }
+
+        if(!room.controller.my) {
+            return false;
+        }
+
+        if(room.controller.level < 1) {
+            return false;
+        }
+
+        if(count > 1) {
+            return false;
+        }
+
+        return true;
     },
     run: function(creep: Creep) {
         return;
