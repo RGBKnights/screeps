@@ -25,30 +25,36 @@ function proccessRoom(room:Room, roles:any) {
             for (let name in creeps) {
                 if (creeps.hasOwnProperty(name)) {
                     let creep = creeps[name];
-                    if(creep.memory.role === role.handler.getName()) {
+                    if(creep.memory.role === role.getName()) {
                         count++;
-                        role.handler.run(creep);
+                        role.run(creep);
                     }
                 }
             }
 
             if(role.shouldSpawn(room, count)) {
-                let body = role.getBody();
-                let creep = role.spawnUnit(body, room, spawns, sources, creeps);
+                let creep = role.spawnUnit(room, spawns, sources, creeps);
+                if(creep) {
+                    role.run(creep);
+                }
             }
         }
     }
-}
+};
+
+function freeMemory() {
+    for(let i in Memory.creeps) {
+        if(!Game.creeps[i]) {
+            delete Memory.creeps[i];
+        }
+    }
+};
 
 module.exports = {
-    freeMemory: function() {
-        for(let i in Memory.creeps) {
-            if(!Game.creeps[i]) {
-                delete Memory.creeps[i];
-            }
-        }
-    },
-    processWorkers: function() {
+
+    loop: function() {
+        freeMemory();
+
         let roles = {
             worker: roleWorker,
             minner: roleMinner,

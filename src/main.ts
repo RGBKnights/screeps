@@ -3,7 +3,4 @@
 
 let hive = require("hive");
 
-module.exports.loop = function () {
-    hive.freeMemory();
-    hive.processWorkers();
-};
+module.exports.loop = hive.loop();
