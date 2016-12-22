@@ -1,6 +1,16 @@
 /// <reference path="../typings/index.d.ts" />
 "use strict";
 
+const enum WorkerState {
+    Empty = 0,
+    Full = 1,
+}
+
+const enum WorkerJob {
+    SupplyBuildings = 2,
+    UpgradeController = 3,
+}
+
 module.exports = {
     getBody: function(): Array<BodyPartType> {
         // 300 = 100, 50, 50, 50, 50
@@ -50,7 +60,7 @@ module.exports = {
         return Game.creeps[name];
     },
     run: function(creep: Creep) {
-        if(creep.memory.state === 0) {
+        if(creep.memory.state === WorkerState.Empty) {
             let sources = creep.room.find(FIND_SOURCES, {
                 filter: (source: Source) => {
                     return source.energy > 0;
@@ -61,19 +71,19 @@ module.exports = {
             if(result === ERR_NOT_IN_RANGE) {
                 creep.moveTo(closest);
             } else if(result === ERR_FULL) {
-                creep.memory.state = 1;
+                creep.memory.state = WorkerState.Full;
             }
         }
 
-        if(creep.memory.state === 1) {
+        if(creep.memory.state === WorkerState.Full1) {
             if(creep.room.energyAvailable < creep.room.energyCapacityAvailable) {
-                creep.memory.state = 2;
+                creep.memory.state = WorkerJob.SupplyBuildings;
             } else {
-                creep.memory.state = 3;
+                creep.memory.state = WorkerJob.UpgradeController;
             }
         }
 
-        if(creep.memory.state === 2) {
+        if(creep.memory.state === WorkerJob.SupplyBuildings) {
             let needingEngery = creep.room.find(FIND_STRUCTURES, {
                 filter: (structure: any) => {
                     if(structure.structureType === STRUCTURE_SPAWN) {
@@ -96,7 +106,7 @@ module.exports = {
             }
         }
 
-        if(creep.memory.state === 3) {
+        if(creep.memory.state === WorkerJob.UpgradeController) {
             let result = creep.upgradeController(creep.room.controller);
             if (result === ERR_NOT_IN_RANGE) {
                 creep.moveTo(creep.room.controller);
