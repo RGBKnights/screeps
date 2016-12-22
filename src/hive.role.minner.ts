@@ -58,6 +58,11 @@ module.exports = {
         return Game.creeps[name];
     },
     run: function(creep: Creep) {
-        return;
+        let source = Game.getObjectById(creep.memory.source) as Source;
+        if(source) {
+            if(creep.harvest(source) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(source);
+            }
+        }
     }
 };

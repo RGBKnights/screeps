@@ -22,7 +22,7 @@ module.exports = {
             return false;
         }
 
-        if(count > room.memory.totals.sources) {
+        if(count > 3) {
             return false;
         }
 
@@ -49,89 +49,53 @@ module.exports = {
 
         return Game.creeps[name];
     },
-    changeState: function() {
-        
-    },
     run: function(creep: Creep) {
-        // Harvest energy
-        let sourcesWithEngery = creep.room.find(FIND_SOURCES, {
-            filter: (source: Source) => {
-                return source.energy > 0;
-            }
-        });
-
-        // Pickup energy
-        let dropedEngery = creep.room.find(FIND_DROPPED_RESOURCES, {
-            filter: (res: Resource) => {
-                return res.resourceType === RESOURCE_ENERGY;
-            }
-        });
-
-        let engeryAvailable = (sourcesWithEngery.length > 0 || dropedEngery.length > 0);
-
-        if(creep.memory.state === 0 && creep.carry.energy < creep.carryCapacity && engeryAvailable) {
-            creep.memory.state = 1;
-        }
-        if(creep.memory.state === 1) {
-            if(dropedEngery.length > 0) {
-                let closest = creep.pos.findClosestByRange(dropedEngery);
-                let result = creep.pickup(closest);
-                if(result === OK) {
-                    return;
-                } else if(result === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(closest);
-                } else {
-                    creep.memory.state = 0;
+        if(creep.memory.state === 0) {
+            let sources = creep.room.find(FIND_SOURCES, {
+                filter: (source: Source) => {
+                    return source.energy > 0;
                 }
-            } else {
-                let closest = creep.pos.findClosestByRange(sourcesWithEngery);
-                let result = creep.harvest(closest);
-                if(result === OK) {
-                    return;
-                } else if(result === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(closest);
-                } else {
-                    creep.memory.state = 0;
-                }
-            }
-
-            return;
-        }
-
-        // Transfer energy
-        let needingEngery = creep.room.find(FIND_STRUCTURES, {
-            filter: (structure: any) => {
-                if(structure.structureType === STRUCTURE_SPAWN) {
-                    let spawn = structure as StructureSpawn;
-                    return spawn.energy < spawn.energyCapacity;
-                } else if(structure.structureType === STRUCTURE_EXTENSION) {
-                    let extension = structure as StructureExtension;
-                    return extension.energy < extension.energyCapacity;
-                } else {
-                    return false;
-                }
-            }
-        });
-        if(creep.memory.state === 0 && needingEngery.length > 0 && creep.carry.energy > 0) {
-            creep.memory.state = 2;
-        }
-        if(creep.memory.state === 2) {
-            if(creep.carry.energy === 0) {
-                creep.memory.state = 0;
-                return;
-            }
-
-            let closest = creep.pos.findClosestByRange(needingEngery);
-            let result = creep.transfer(closest, RESOURCE_ENERGY);
-            if (result === OK) {
-                return;
-            } else if(result === ERR_NOT_IN_RANGE) {
+            });
+            let closest = creep.pos.findClosestByPath(sources);
+            let result = creep.harvest(closest);
+            if(result === ERR_NOT_IN_RANGE) {
                 creep.moveTo(closest);
-            } else {
-                creep.memory.state = 0;
+            } else if(result === ERR_FULL) {
+                creep.memory.state = 1;
             }
-
-            return;
         }
+
+        if(creep.memory.state === 1) {
+            if(creep.room.energyAvailable < creep.room.energyCapacityAvailable) {
+                let needingEngery = creep.room.find(FIND_STRUCTURES, {
+                    filter: (structure: any) => {
+                        if(structure.structureType === STRUCTURE_SPAWN) {
+                            let spawn = structure as StructureSpawn;
+                            return spawn.energy < spawn.energyCapacity;
+                        } else if(structure.structureType === STRUCTURE_EXTENSION) {
+                            let extension = structure as StructureExtension;
+                            return extension.energy < extension.energyCapacity;
+                        } else {
+                            return false;
+                        }
+                    }
+                });
+                let closest = creep.pos.findClosestByPath(needingEngery);
+                let result = creep.transfer(closest, RESOURCE_ENERGY);
+                if(result === ERR_NOT_IN_RANGE) {
+                    creep.moveTo(closest);
+                } else if (result === ERR_NOT_ENOUGH_RESOURCES) {
+                    creep.memory.state = 0;
+                }
+            } else {
+                let result = creep.upgradeController(creep.room.controller);
+                if (result === ERR_NOT_IN_RANGE) {
+                    creep.moveTo(creep.room.controller);
+                } else if (result === ERR_NOT_ENOUGH_RESOURCES) {
+                    creep.memory.state = 0;
+                }
+            }
+        }
+
     }
 };

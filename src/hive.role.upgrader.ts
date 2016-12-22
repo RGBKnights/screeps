@@ -49,6 +49,8 @@ module.exports = {
         return Game.creeps[name];
     },
     run: function(creep: Creep) {
-        return;
+        if (creep.upgradeController(creep.room.controller) === ERR_NOT_IN_RANGE) {
+            creep.moveTo(creep.room.controller);
+        }
     }
 };
