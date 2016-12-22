@@ -8,7 +8,7 @@ module.exports = {
     getName: function(): string {
         return "minner";
     },
-    shouldSpawn: function(room:Room, count): boolean {
+    spawnUnitIfNeeded: function(room:Room, count: any, spawns:Array<Spawn>, sources:Array<Source>, friendlies:Array<Creep>, hostiles:Array<Creep>): boolean {
         if(!room.controller) {
             return false;
         }
@@ -25,38 +25,34 @@ module.exports = {
             return false;
         }
 
-        return true;
-    },
-    spawnUnit: function(room: Room, spawns:Array<Spawn>, sources:Array<Source>, creeps:Array<Creep>) {
-        let body = this.getBody();
-        let role = this.getName();
-
-        let spawn = _.first(spawns);
-        if(spawn) {
-           return null;
-        }
-
-        let result = spawn.canCreateCreep(body, null);
-        if(result !== OK) {
-            return null;
-        }
-
-        let workers = _.filter(creeps, (creep:Creep) => creep.memory.role === role);
+        let workers = _.filter(friendlies, (creep:Creep) => creep.memory.role === role);
         let allSource = _.map(sources, (source:Source) => source.id).sort();
         let takenSource = _.map(workers, (creep:Creep) => creep.memory.source).sort();
         let delta = _.difference(allSource, takenSource);
 
         if(delta.length === 0) {
-            return null;
+            return false;
         }
 
+        let spawn = _.first(spawns);
+        if(spawn) {
+           return false;
+        }
+        
+        let body = this.getBody();
+        let result = spawn.canCreateCreep(body, null);
+        if(result !== OK) {
+            return false;
+        }
+
+        let role = this.getName();
         let name = spawn.createCreep(body, null, { state: 0, role: role, source: delta[0] });
-        if(!_.isString(name)) {
+        if(_.isString(name)) {
+            return Game.creeps[name];
+        } else {
             return null;
         }
-
-        return Game.creeps[name];
-    },
+    }
     run: function(creep: Creep) {
         let source = Game.getObjectById(creep.memory.source) as Source;
         if(source) {

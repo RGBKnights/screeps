@@ -19,45 +19,41 @@ module.exports = {
     getName: function(): string {
         return "worker";
     },
-    shouldSpawn: function(room:Room,  count): boolean {
+    spawnUnitIfNeeded: function(room:Room, count: any, spawns:Array<Spawn>, sources:Array<Source>, friendlies:Array<Creep>, hostiles:Array<Creep>): boolean {
         if(!room.controller) {
-            return false;
+            return null;
         }
 
         if(!room.controller.my) {
-            return false;
+            return null;
         }
 
         if(room.controller.level > 1) {
-            return false;
+            return null;
         }
 
         if(count > 3) {
-            return false;
+            return null;
         }
-
-        return true;
-    },
-    spawnUnit: function(room: Room, spawns:Array<Spawn>, sources:Array<Source>, creeps:Array<Creep>) {
-        let body = this.getBody();
-        let role = this.getName();
 
         let spawn = _.first(spawns);
         if(spawn) {
             return null;
         }
 
+        let body = this.getBody();
         let result = spawn.canCreateCreep(body, null);
         if(result !== OK) {
             return null;
         }
 
-        let name = spawn.createCreep(body, null, { state: 0, role: role });
-        if(!_.isString(name)) {
+        let role = this.getName();
+        let name = spawn.createCreep(body, null, { state: WorkerState.Empty, role: role });
+        if(_.isString(name)) {
+           return Game.creeps[name];
+        } else {
             return null;
         }
-
-        return Game.creeps[name];
     },
     run: function(creep: Creep) {
         if(creep.memory.state === WorkerState.Empty) {

@@ -3,10 +3,10 @@
 
 module.exports = {
     getBody: function(): Array<BodyPartType> {
-        return [WORK, WORK, CARRY, CARRY, MOVE, MOVE];
+        return [RANGED_ATTACK, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, MOVE, MOVE];
     },
     getName: function(): string {
-        return "upgrader";
+        return "artillery";
     },
     spawnUnitIfNeeded: function(room:Room, count: any, spawns:Array<Spawn>, sources:Array<Source>, friendlies:Array<Creep>, hostiles:Array<Creep>): boolean {
         if(!room.controller) {
@@ -21,7 +21,7 @@ module.exports = {
             return null;
         }
 
-        if(count >= (room.controller.level * 2)) {
+        if(hostiles.length == 0) {
             return null;
         }
 
@@ -45,8 +45,11 @@ module.exports = {
         }
     },
     run: function(creep: Creep) {
-        if (creep.upgradeController(creep.room.controller) === ERR_NOT_IN_RANGE) {
-            creep.moveTo(creep.room.controller);
+        var target = creep.pos.findClosestByPath(FIND_HOSTILE_CREEPS);
+        if(target) {
+            if(creep.attack(target) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(target);
+            }
         }
     }
 };

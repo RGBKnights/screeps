@@ -5,17 +5,13 @@ let roleWorker = require("hive.role.worker");
 let roleHauler = require("hive.role.hauler");
 let roleMinner = require("hive.role.minner");
 let roleUpgrader = require("hive.role.upgrader");
+let roleArtillery = require("hive.role.artillery");
 
 function proccessRoom(room:Room, roles:any) {
-    let creeps = room.find(FIND_MY_CREEPS);
+    let friendlies = room.find(FIND_MY_CREEPS);
+    var hostiles = room.find(FIND_HOSTILE_CREEPS);
     let spawns = room.find(FIND_MY_SPAWNS);
     let sources = room.find(FIND_SOURCES);
-
-    room.memory.totals = {
-        creeps: creeps.length,
-        spawns: spawns.length,
-        sources: sources.length
-    };
 
     for (let key in roles) {
         if (roles.hasOwnProperty(key)) {
@@ -31,12 +27,10 @@ function proccessRoom(room:Room, roles:any) {
                     }
                 }
             }
-
-            if(role.shouldSpawn(room, count)) {
-                let creep = role.spawnUnit(room, spawns, sources, creeps);
-                if(creep) {
-                    role.run(creep);
-                }
+            
+            let creep = role.spawnUnitIfNeeded(room, count, spawns, sources, friendlies, hostiles);
+            if(creep) {
+                role.run(creep);
             }
         }
     }
@@ -59,7 +53,8 @@ module.exports = {
             worker: roleWorker,
             minner: roleMinner,
             hauler: roleHauler,
-            upgrader: roleUpgrader
+            upgrader: roleUpgrader,
+            artillery: roleArtillery
         };
 
         for (let key in Game.rooms) {

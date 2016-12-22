@@ -8,50 +8,50 @@ module.exports = {
     getName: function(): string {
         return "hauler";
     },
-    shouldSpawn: function(room:Room, count): boolean {
+    spawnUnitIfNeeded: function(room:Room, count: any, spawns:Array<Spawn>, sources:Array<Source>, friendlies:Array<Creep>, hostiles:Array<Creep>): boolean {
         if(!room.controller) {
-            return false;
+            return null;
         }
 
         if(!room.controller.my) {
-            return false;
+            return null;
         }
 
         if(room.controller.level < 2) {
-            return false;
+            return null;
         }
 
         if(count >= (room.controller.level * 5)) {
-            return false;
+            return null;
         }
 
         let energy = room.find(FIND_DROPPED_RESOURCES, { filter: (res: Resource) => res.resourceType === RESOURCE_ENERGY });
         if(energy.length === 0) {
-            return false;
+            return null;
         }
 
-        return true;
-    },
-    spawnUnit: function(room: Room, spawns:Array<Spawn>, sources:Array<Source>, creeps:Array<Creep>) {
-        let body = this.getBody();
-        let role = this.getName();
+        if(hostiles.length > 0) {
+            return null;
+        }
 
         let spawn = _.first(spawns);
         if(spawn) {
            return null;
         }
 
+        let body = this.getBody();
         let result = spawn.canCreateCreep(body, null);
         if(result !== OK) {
             return null;
         }
 
+        let role = this.getName();
         let name = spawn.createCreep(body, null, { state: 0, role: role });
-        if(!_.isString(name)) {
+        if(_.isString(name)) {
+            Game.creeps[name];
+        } else {
             return null;
         }
-
-        return Game.creeps[name];
     },
     run: function(creep: Creep) {
 
