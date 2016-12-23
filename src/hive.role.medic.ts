@@ -8,7 +8,7 @@ module.exports = {
     getName: function(): string {
         return "medic";
     },
-    spawnUnitIfNeeded: function(room:Room, count: any, spawns:Array<Spawn>, sources:Array<Source>, creeps:Array<Creep>): boolean {
+    spawnUnitIfNeeded: function(room:Room, count: any, spawns:Array<Spawn>, sources:Array<Source>, friendlies:Array<Creep>, hostiles:Array<Creep>): Creep {
         if(!room.controller) {
             return null;
         }
@@ -21,7 +21,11 @@ module.exports = {
             return null;
         }
 
-        // Friendly militans...?
+        let spawn = _.first(spawns);
+        if(spawn) {
+           return null;
+        }
+
         let militans = _.filter(friendlies, (creep:Creep) => creep.memory.role === "artillery");
         if(militans.length === 0) {
             return null;

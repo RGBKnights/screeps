@@ -3,12 +3,12 @@
 
 const enum WorkerState {
     Empty = 0,
-    Full = 1,
+    Full = 1
 }
 
 const enum WorkerJob {
     SupplyBuildings = 2,
-    UpgradeController = 3,
+    UpgradeController = 3
 }
 
 module.exports = {
@@ -19,7 +19,7 @@ module.exports = {
     getName: function(): string {
         return "worker";
     },
-    spawnUnitIfNeeded: function(room:Room, count: any, spawns:Array<Spawn>, sources:Array<Source>, friendlies:Array<Creep>, hostiles:Array<Creep>): boolean {
+    spawnUnitIfNeeded: function(room:Room, count: any, spawns:Array<Spawn>, sources:Array<Source>, friendlies:Array<Creep>, hostiles:Array<Creep>): Creep {
         if(!room.controller) {
             return null;
         }
@@ -28,16 +28,12 @@ module.exports = {
             return null;
         }
 
-        if(room.controller.level > 1) {
-            return null;
-        }
-
-        if(count > 3) {
+        if(friendlies.length > 0) {
             return null;
         }
 
         let spawn = _.first(spawns);
-        if(spawn) {
+        if(!spawn) {
             return null;
         }
 
@@ -57,21 +53,37 @@ module.exports = {
     },
     run: function(creep: Creep) {
         if(creep.memory.state === WorkerState.Empty) {
-            let sources = creep.room.find(FIND_SOURCES, {
-                filter: (source: Source) => {
-                    return source.energy > 0;
+            if(creep.carry.energy === creep.carryCapacity) {
+                creep.memory.state = WorkerState.Full;
+            }
+
+            // Pickup energy
+            let dropedEngery = creep.room.find(FIND_DROPPED_RESOURCES, {
+                filter: (res: Resource) => {
+                    return res.resourceType === RESOURCE_ENERGY;
                 }
             });
-            let closest = creep.pos.findClosestByPath(sources);
-            let result = creep.harvest(closest);
-            if(result === ERR_NOT_IN_RANGE) {
-                creep.moveTo(closest);
-            } else if(result === ERR_FULL) {
-                creep.memory.state = WorkerState.Full;
+            if(dropedEngery.length > 0) {
+                let closest = creep.pos.findClosestByPath(dropedEngery);
+                let result = creep.pickup(closest);
+                if(result === ERR_NOT_IN_RANGE) {
+                    creep.moveTo(closest);
+                }
+            } else {
+                let sources = creep.room.find(FIND_SOURCES, {
+                    filter: (source: Source) => {
+                        return source.energy > 0;
+                    }
+                });
+                let closest = creep.pos.findClosestByPath(sources);
+                let result = creep.harvest(closest);
+                if(result === ERR_NOT_IN_RANGE) {
+                    creep.moveTo(closest);
+                }
             }
         }
 
-        if(creep.memory.state === WorkerState.Full1) {
+        if(creep.memory.state === WorkerState.Full) {
             if(creep.room.energyAvailable < creep.room.energyCapacityAvailable) {
                 creep.memory.state = WorkerJob.SupplyBuildings;
             } else {
@@ -95,10 +107,11 @@ module.exports = {
             });
             let closest = creep.pos.findClosestByPath(needingEngery);
             let result = creep.transfer(closest, RESOURCE_ENERGY);
+            console.log(result);
             if(result === ERR_NOT_IN_RANGE) {
                 creep.moveTo(closest);
-            } else if (result === ERR_NOT_ENOUGH_RESOURCES) {
-                creep.memory.state = 0;
+            } else {
+                creep.memory.state = WorkerState.Empty;
             }
         }
 
@@ -107,7 +120,7 @@ module.exports = {
             if (result === ERR_NOT_IN_RANGE) {
                 creep.moveTo(creep.room.controller);
             } else if (result === ERR_NOT_ENOUGH_RESOURCES) {
-                creep.memory.state = 0;
+                creep.memory.state = WorkerState.Empty;
             }
         }
 

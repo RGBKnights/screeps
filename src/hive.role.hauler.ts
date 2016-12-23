@@ -8,7 +8,7 @@ module.exports = {
     getName: function(): string {
         return "hauler";
     },
-    spawnUnitIfNeeded: function(room:Room, count: any, spawns:Array<Spawn>, sources:Array<Source>, friendlies:Array<Creep>, hostiles:Array<Creep>): boolean {
+    spawnUnitIfNeeded: function(room:Room, count: any, spawns:Array<Spawn>, sources:Array<Source>, friendlies:Array<Creep>, hostiles:Array<Creep>): Creep {
         if(!room.controller) {
             return null;
         }
@@ -21,21 +21,19 @@ module.exports = {
             return null;
         }
 
-        if(count >= (room.controller.level * 5)) {
-            return null;
-        }
-
         let energy = room.find(FIND_DROPPED_RESOURCES, { filter: (res: Resource) => res.resourceType === RESOURCE_ENERGY });
         if(energy.length === 0) {
             return null;
         }
 
-        if(hostiles.length > 0) {
+        let minners = _.filter(friendlies, (creep:Creep) => creep.memory.role === "minner");
+        if(count >= minners.length) {
             return null;
         }
 
+
         let spawn = _.first(spawns);
-        if(spawn) {
+        if(!spawn) {
            return null;
         }
 
@@ -48,7 +46,7 @@ module.exports = {
         let role = this.getName();
         let name = spawn.createCreep(body, null, { state: 0, role: role });
         if(_.isString(name)) {
-            Game.creeps[name];
+            return Game.creeps[name];
         } else {
             return null;
         }
@@ -73,11 +71,12 @@ module.exports = {
             if(creep.room.energyAvailable === creep.room.energyCapacityAvailable) {
                 let upgraders = creep.room.find(FIND_MY_CREEPS, { filter: (c:Creep) => c.memory.role === "upgrader" });
                 if(upgraders.length > 0) {
-                    let closest = creep.pos.findClosestByPath(upgraders);
+                    upgraders.sort((a,b) => a.carry.energy - b.carry.energy);
+                    let closest = _.first(upgraders);
                     let result = creep.transfer(closest, RESOURCE_ENERGY);
                     if(result === ERR_NOT_IN_RANGE) {
                         creep.moveTo(closest);
-                    } else if (result === ERR_NOT_ENOUGH_RESOURCES) {
+                    } else {
                         creep.memory.state = 0;
                     }
                 }
@@ -100,7 +99,7 @@ module.exports = {
                     let result = creep.transfer(closest, RESOURCE_ENERGY);
                     if(result === ERR_NOT_IN_RANGE) {
                         creep.moveTo(closest);
-                    } else if (result === ERR_NOT_ENOUGH_RESOURCES) {
+                    } else {
                         creep.memory.state = 0;
                     }
                 }

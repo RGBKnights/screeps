@@ -8,7 +8,7 @@ module.exports = {
     getName: function(): string {
         return "artillery";
     },
-    spawnUnitIfNeeded: function(room:Room, count: any, spawns:Array<Spawn>, sources:Array<Source>, friendlies:Array<Creep>, hostiles:Array<Creep>): boolean {
+    spawnUnitIfNeeded: function(room:Room, count: any, spawns:Array<Spawn>, sources:Array<Source>, friendlies:Array<Creep>, hostiles:Array<Creep>): Creep {
         if(!room.controller) {
             return null;
         }
@@ -21,7 +21,13 @@ module.exports = {
             return null;
         }
 
-        if(hostiles.length == 0) {
+        if(hostiles.length === 0) {
+            return null;
+        }
+
+        let haulers = _.filter(friendlies, (creep:Creep) => creep.memory.role === "hauler");
+        let minners = _.filter(friendlies, (creep:Creep) => creep.memory.role === "minner");
+        if(minners.length === 0 || haulers.length === 0) {
             return null;
         }
 

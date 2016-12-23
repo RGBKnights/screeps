@@ -3,12 +3,12 @@
 
 module.exports = {
     getBody: function(): Array<BodyPartType> {
-        return [WORK, WORK, CARRY, CARRY, MOVE, MOVE];
+        return [WORK, CARRY, CARRY, MOVE, MOVE];
     },
     getName: function(): string {
         return "upgrader";
     },
-    spawnUnitIfNeeded: function(room:Room, count: any, spawns:Array<Spawn>, sources:Array<Source>, friendlies:Array<Creep>, hostiles:Array<Creep>): boolean {
+    spawnUnitIfNeeded: function(room:Room, count: any, spawns:Array<Spawn>, sources:Array<Source>, friendlies:Array<Creep>, hostiles:Array<Creep>): Creep {
         if(!room.controller) {
             return null;
         }
@@ -17,16 +17,16 @@ module.exports = {
             return null;
         }
 
-        if(room.controller.level < 2) {
+        if(room.controller.level < 1) {
             return null;
         }
 
-        if(count >= (room.controller.level * 2)) {
+        if(count >= 3) {
             return null;
         }
 
         let spawn = _.first(spawns);
-        if(spawn) {
+        if(!spawn) {
            return null;
         }
 

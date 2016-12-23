@@ -3,10 +3,10 @@
 
 module.exports = {
     getBody: function(): Array<BodyPartType> {
-        return [WORK, WORK, MOVE, MOVE];
+        return [WORK, CARRY, CARRY, MOVE, MOVE];
     },
     getName: function(): string {
-        return "minner";
+        return "builder";
     },
     spawnUnitIfNeeded: function(room:Room, count: any, spawns:Array<Spawn>, sources:Array<Source>, friendlies:Array<Creep>, hostiles:Array<Creep>): Creep {
         if(!room.controller) {
@@ -21,16 +21,12 @@ module.exports = {
             return null;
         }
 
-        if(count >= sources.length) {
+        if(count >= 1) {
             return null;
         }
 
-        let minner = _.filter(friendlies, (creep:Creep) => creep.memory.role === "minner");
-        let allSource = _.map(sources, (source:Source) => source.id).sort();
-        let takenSource = _.map(minner, (creep:Creep) => creep.memory.source).sort();
-        let delta = _.difference(allSource, takenSource);
-
-        if(delta.length === 0) {
+        let constructionSites = room.find(FIND_MY_CONSTRUCTION_SITES);
+        if(constructionSites.length === 0) {
             return null;
         }
 
@@ -46,7 +42,7 @@ module.exports = {
         }
 
         let role = this.getName();
-        let name = spawn.createCreep(body, null, { state: 0, role: role, source: delta[0] });
+        let name = spawn.createCreep(body, null, { state: 0, role: role });
         if(_.isString(name)) {
             return Game.creeps[name];
         } else {
@@ -54,11 +50,6 @@ module.exports = {
         }
     },
     run: function(creep: Creep) {
-        let source = Game.getObjectById(creep.memory.source) as Source;
-        if(source) {
-            if(creep.harvest(source) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(source);
-            }
-        }
+        return;
     }
 };
