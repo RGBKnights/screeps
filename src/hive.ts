@@ -61,7 +61,7 @@ function determineRoomThreatLevel(room:Room) {
     room.memory.threat = (friendlyStrenght - hostileStrenght);
 } 
 
-function updateRoomsMemory(room:Room) {
+function updateRoomMemory(room:Room) {
     if((room.memory.lastProcesedTick + 100) == Game.time) {
         room.memory.lastProcesedTick = Game.time;
 
@@ -70,8 +70,32 @@ function updateRoomsMemory(room:Room) {
     }
 }
 
+function processUnits(room:Room) {
+    // process units in room
+}
+
+function processTowers(room:Room) {
+    // process towers in room
+}
+
+function constructBuildings(room:Room) {
+    // create construction sites
+
+    // [Spawn / Extension] + [Container / Storage]
+    // Rampart / Walls
+    // [Extractor / Lab] + [Storage / Container]
+}
+
+function constructUnits(room:Room) {
+    // create units - Workers
+
+    // create units - Scouts
+}
+
 function processRoom(room:Room) {
-    updateRoomsMemory(room);
+    updateRoomMemory(room);
+    processUnits(room);
+    processTowers(room);
 }
 
 module.exports = {
