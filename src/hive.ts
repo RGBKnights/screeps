@@ -37,11 +37,11 @@ function determineRoomThreatLevel(room:Room) {
     let friendlyStrenght = 0;
     {
         let creeps = room.find(FIND_MY_CREEPS);
-        let potential = _.map(, (creep:Creep) =>  creep.getActiveBodyparts(ATTACK).length + creep.getActiveBodyparts(RANGED_ATTACK).length);
+        let potential = _.map(creeps, (creep:Creep) =>  creep.getActiveBodyparts(ATTACK) + creep.getActiveBodyparts(RANGED_ATTACK));
         friendlyStrenght += _.sum(potential);
     }
     {
-        let towers = room.find(FIND_MY_STRUCTURES, { filter: { structureType: STRUCTURE_TOWER } });
+        let towers = room.find(FIND_MY_STRUCTURES, { filter: (structure) => structure.structureType === STRUCTURE_TOWER });
         let potential = _.map(towers, (tower:StructureTower) => 5);
         friendlyStrenght += _.sum(potential);
     }
@@ -49,20 +49,20 @@ function determineRoomThreatLevel(room:Room) {
     let hostileStrenght = 0;
     {
         let creeps = room.find(FIND_HOSTILE_CREEPS);
-        let potential = _.map(creeps, (creep:Creep) =>  creep.getActiveBodyparts(ATTACK).length + creep.getActiveBodyparts(RANGED_ATTACK).length);
+        let potential = _.map(creeps, (creep:Creep) =>  creep.getActiveBodyparts(ATTACK) + creep.getActiveBodyparts(RANGED_ATTACK));
         hostileStrenght += _.sum(potential);
     }
     {
-        let towers = room.find(FIND_HOSTILE_STRUCTURES, { filter: { structureType: STRUCTURE_TOWER } });
+        let towers = room.find(FIND_HOSTILE_STRUCTURES, { filter: (structure) => structure.structureType === STRUCTURE_TOWER });
         let potential = _.map(towers, (tower:StructureTower) => 10);
         hostileStrenght += _.sum(potential);
     }
 
     room.memory.threat = (friendlyStrenght - hostileStrenght);
-} 
+}
 
 function updateRoomMemory(room:Room) {
-    if((room.memory.lastProcesedTick + 100) == Game.time) {
+    if((room.memory.lastProcesedTick + 100) === Game.time) {
         room.memory.lastProcesedTick = Game.time;
 
         determineRoomAllegiance(room);
@@ -94,17 +94,19 @@ function constructUnits(room:Room) {
 
 function processRoom(room:Room) {
     updateRoomMemory(room);
+
     processUnits(room);
     processTowers(room);
+
+    constructBuildings(room);
+    constructUnits(room);
 }
 
 module.exports = {
     loop: function() {
         freeMemory();
 
-        Game.rooms.forEach(room => {
-            processRoom(room);
-        });
+        _.forEach(Game.rooms, (room: Room) => processRoom(room));
 
     }
 };
