@@ -27,7 +27,7 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.registerTask("build", ['clean:preBuild', 'ts:default', 'clean:postBuild', 'copy:default']);
+    grunt.registerTask("build", ['clean:preBuild', 'ts:default', 'clean:postBuild'/*, 'copy:default'*/]);
 
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');

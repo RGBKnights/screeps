@@ -1,16 +1,6 @@
 /// <reference path="../typings/index.d.ts" />
 "use strict";
 
-// let woker = require("hive.worker");
-
-function freeMemory() {
-    for(let i in Memory.creeps) {
-        if(!Game.creeps[i]) {
-            delete Memory.creeps[i];
-        }
-    }
-}
-
 enum RoomAllegiance {
     Neutral = 0,
     Frendly,
@@ -76,6 +66,34 @@ function processUnits(room:Room) {
 
 function processTowers(room:Room) {
     // process towers in room
+    let towers = room.find(FIND_STRUCTURES, { filter: (structure) => structure.structureType === STRUCTURE_TOWER });
+    if(room.memory.threat < 0) {
+        // Overwhelmed... Attack!
+        _.forEach(towers, (tower: StructureTower) => {
+            let closest = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+            if(closest) {
+                tower.attack(closest);
+            }
+        });
+    } else {
+        // Suport..
+        _.forEach(towers, (tower: StructureTower, key)  => {
+            if(key % 2 === 0) {
+                let closest = tower.pos.findClosestByRange(FIND_STRUCTURES, {
+                    filter: (structure) => structure.hits < structure.hitsMax
+                });
+                if(closest) {
+                    tower.repair(closest);
+                }
+            } else {
+                let closest = tower.pos.findClosestByRange(FIND_MY_CREEPS);
+                if(closest) {
+                    tower.heal(closest);
+                }
+            }
+
+        });
+    }
 }
 
 function constructBuildings(room:Room) {
@@ -92,6 +110,7 @@ function constructUnits(room:Room) {
     // create units - Scouts
 }
 
+
 function processRoom(room:Room) {
     updateRoomMemory(room);
 
@@ -102,11 +121,19 @@ function processRoom(room:Room) {
     constructUnits(room);
 }
 
+
+function freeMemory() {
+    for(let i in Memory.creeps) {
+        if(!Game.creeps[i]) {
+            delete Memory.creeps[i];
+        }
+    }
+}
+
 module.exports = {
     loop: function() {
         freeMemory();
 
         _.forEach(Game.rooms, (room: Room) => processRoom(room));
-
     }
 };
