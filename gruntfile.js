@@ -12,8 +12,9 @@ module.exports = function (grunt) {
                 src: ["src\\**\\*.ts"],
                 outDir: 'dist\\',
                 options: {
-                    target: 'es5',
+                    target: "es5",
                     sourceMap: false,
+                    typeRoots: ["./typings"]
                 }
 			}
         },
