@@ -7,3 +7,5 @@
 
 module.exports = {
 };
+
+// Terminal(Energy+Minterals) / Storage(Large)

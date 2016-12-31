@@ -7,3 +7,5 @@
 
 module.exports = {
 };
+
+// Extractor / Lab / Storage(Large)
