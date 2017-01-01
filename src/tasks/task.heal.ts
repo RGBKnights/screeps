@@ -5,5 +5,28 @@
  * This description can span several lines and ends with a period.
  */
 
-module.exports = {
+let tasks = require("tasks");
+
+function TaskHeal () {
+    this.taskType = "heal";
+    this.conflicts = "heal";
+    this.pickup = false;
+    this.loop = true;
+}
+
+TaskHeal.prototype.doTask = function(creep, task) {
+    let target;
+    target = tasks.getTargetId(creep);
+    if (!target) {
+        target = creep.pos.findInRange(FIND_MY_CREEPS, "heal", function (c) {
+            return c.hits < c.hitsMax;
+        });
+    }
+    if (target) {
+        creep.heal(target);
+    }
+
+    return "finished";
 };
+
+module.exports = TaskHeal;

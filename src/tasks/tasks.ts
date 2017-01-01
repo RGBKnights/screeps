@@ -5,19 +5,17 @@
  * This description can span several lines and ends with a period.
  */
 
-let tasks = {
-    getTargetId: function (creep) {
+export class TaskHelper {
+    public getTargetId(creep) {
         return creep.memory.tasks.targetId;
-    },
-    setTargetId: function (creep, targetId) {
+    }
+    public setTargetId(creep, targetId) {
         if (undefined === targetId) {
-            creep.memory.tasks.targetId = undefined
-        } else if (typeof targetId == "string") {
+            creep.memory.tasks.targetId = undefined;
+        } else if (typeof targetId === "string") {
             creep.memory.tasks.targetId = targetId;
         } else {
             creep.memory.tasks.targetId = targetId.id;
         }
     }
 };
-
-module.exports = tasks;

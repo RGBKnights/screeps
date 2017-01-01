@@ -5,17 +5,16 @@
  * This description can span several lines and ends with a period.
  */
 
-import tasks = require("./tasks");
+import * as _tasks from "./tasks";
 
 function TaskActionTarget (action) {
     this.taskType = "action.target";
     this.action = action;
     this.conflicts = action;
-    this.loop = true;
-    this.pickup = true;
 }
 
 TaskActionTarget.prototype.doTask = function(creep, task) {
+    let tasks = new _tasks.TaskHelper();
     let target =  Game.getObjectById(tasks.getTargetId(creep));
     if (!target) {
         return "finished";
