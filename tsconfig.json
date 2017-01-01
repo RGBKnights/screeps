@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "noResolve": false,
+    "noImplicitAny": false,
+    "typeRoots" : ["./typings"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}
