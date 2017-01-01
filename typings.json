@@ -1,9 +1,0 @@
-{
-  "name": "screeps-hive",
-  "globalDependencies": {
-    "lodash": "github:DefinitelyTyped/DefinitelyTyped/lodash/lodash-3.10.d.ts#fdddacc2e801364decd875dee45bbaf90110631d",
-    "node": "github:DefinitelyTyped/DefinitelyTyped/node/node.d.ts#88c0d5f868bc184d70b6799d36b1946787beb48d",
-    "screeps-typed": "github:wmulligan/screeps-typed#6e0b940fd9bea91cf09d2adadd75bbbd275bf1a3"
-  },
-  "dependencies": {}
-}
