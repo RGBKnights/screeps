@@ -1,11 +1,11 @@
-// import * as CreepManager from "./components/creeps/creepManager";
-// import * as Config from "./config/config";
-// import { log } from "./components/support/log";
 "use strict";
+
 // Any code written outside the `loop()` method is executed only when the
 // Screeps system reloads your script.
 // Use this bootstrap wisely. You can cache some of your stuff to save CPU.
 // You should extend prototypes before the game loop executes here.
+
+
 /**
  * Screeps system expects this "loop" method in main.js to run the
  * application. If we have this line, we can be sure that the globals are
@@ -14,7 +14,7 @@
  *
  * @export
  */
-function loop() {
+ 
+exports.loop = function() {
     return;
-}
-exports.loop = loop;
+};
