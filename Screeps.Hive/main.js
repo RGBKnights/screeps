@@ -15,6 +15,6 @@
  * @export
  */
  
-exports.loop = function() {
+exports.loop = function () {
     return;
 };
