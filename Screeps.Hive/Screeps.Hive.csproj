@@ -71,14 +71,58 @@
   <ItemGroup>
     <Content Include="main.js" />
     <Content Include="packages.config" />
+    <Content Include="src\building\building.wall.js" />
+    <Content Include="src\building\building.tower.js" />
+    <Content Include="src\building\building.road.js" />
+    <Content Include="src\building\building.port.js" />
+    <Content Include="src\building\building.mine.js" />
+    <Content Include="src\building\building.industry.js" />
+    <Content Include="src\building\building.farm.js" />
+    <Content Include="src\combat\combat.campaigns.js" />
+    <Content Include="src\combat\combat.simulation.js" />
+    <Content Include="src\combat\combat.general.js" />
+    <Content Include="src\combat\combat.estimate.js" />
+    <Content Include="src\combat\combat.efficiency.js" />
+    <Content Include="src\combat\combat.army.js" />
+    <Content Include="src\economy\economy.energy.js" />
+    <Content Include="src\economy\economy.minerals.js" />
+    <Content Include="src\economy\economy.trade.js" />
+    <Content Include="src\economy\economy.efficiency.js" />
+    <Content Include="src\epochs\epoch.growth.js" />
+    <Content Include="src\epochs\epoch.expansion.js" />
+    <Content Include="src\epochs\epoch.domination.js" />
+    <Content Include="src\goals\goal.defend.room.js" />
+    <Content Include="src\goals\goal.dismantle.room.js" />
+    <Content Include="src\goals\goal.maintenance.js" />
+    <Content Include="src\goals\goal.mine.resources.js" />
+    <Content Include="src\goals\goal.patrol.room.js" />
+    <Content Include="src\goals\goal.scout.room.js" />
+    <Content Include="src\goals\goal.transport.resources.js" />
+    <Content Include="src\goals\goal.upgrade.controller.js" />
+    <Content Include="src\goals\goal.suppress.keepers.js" />
+    <Content Include="src\goals\goal.build.defenses.js" />
+    <Content Include="src\goals\goal.attack.room.js" />
+    <Content Include="src\opponents\opponent.model.js" />
+    <Content Include="src\tasks\task.attack.id.js" />
+    <Content Include="src\tasks\task.attack.target.js" />
+    <Content Include="src\tasks\task.boost.js" />
+    <Content Include="src\tasks\task.dismantle.js" />
+    <Content Include="src\tasks\task.follow.js" />
+    <Content Include="src\tasks\task.harvest.js" />
+    <Content Include="src\tasks\task.heal.js" />
+    <Content Include="src\tasks\task.loadup.js" />
+    <Content Include="src\tasks\task.move.find.js" />
+    <Content Include="src\tasks\task.move.pos.js" />
+    <Content Include="src\tasks\task.move.room.js" />
+    <Content Include="src\tasks\task.offload.js" />
+    <Content Include="src\tasks\task.still.miner.js" />
+    <Content Include="src\tasks\task.suppress.keepers.js" />
+    <Content Include="src\tasks\task.move.xy.js" />
+    <Content Include="src\terrain\terrain.analysis.js" />
+    <Content Include="src\utilities\report.console.js" />
+    <Content Include="src\utilities\analysis.cpu.js" />
     <None Include="Properties\PublishProfiles\screeps-local.pubxml" />
     <None Include="_references.js" />
-    <None Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
-    <None Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="references\lodash\lodash.js" />
@@ -118,11 +162,11 @@
     <Content Include="references\screeps\StructureTerminal.js" />
     <Content Include="references\screeps\StructureTower.js" />
     <Content Include="references\screeps\StructureWall.js" />
-    <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
