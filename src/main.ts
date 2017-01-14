@@ -1,6 +1,5 @@
-// import * as CreepManager from "./components/creeps/creepManager";
-import * as Config from "./config/config";
 // import { log } from "./components/support/log";
+import * as Config from "./config/settings";
 
 // Any code written outside the `loop()` method is executed only when the
 // Screeps system reloads your script.
@@ -23,25 +22,23 @@ if (Config.USE_PATHFINDER) {
  * @export
  */
 export function loop() {
+  clearDeadCreepsMemory();
 
+  /*
   for (let i in Game.rooms) {
     let room: Room = Game.rooms[i];
-
-    // CreepManager.run(room);
-
-    gcDeadCreepsMemory(room);
+    processRoom(room);
   }
+  */
 }
 
-function gcDeadCreepsMemory(room: Room) {
-  // Clears any non-existing creep memory.
+/**
+ * Clears any non-existing creep memory.
+ */
+function clearDeadCreepsMemory(): void {
   for (let name in Memory.creeps) {
-    let creep: any = Memory.creeps[name];
-
-    if (creep.room === room.name) {
-      if (!Game.creeps[name]) {
-        delete Memory.creeps[name];
-      }
+    if (!Game.creeps[name]) {
+      delete Memory.creeps[name];
     }
   }
 }
