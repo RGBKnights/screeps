@@ -35,65 +35,72 @@ You can also use `deploy-prod` instead of `deploy` for a bundled version of the 
 ## The Hive
 
 ### Building
-farm
-industry [This is worng name for labs]
-mine
-port
-road
-tower
-wall
+- [ ] farm
+- [ ] industry [This is worng name for labs]
+- [ ] mine
+- [ ] port
+- [ ] road
+- [ ] tower
+- [ ] wall
+
 ### Combat
-squad
-army
-campaign
-estimate
-efficiency
-simulation
+- [ ] squad
+- [ ] army
+- [ ] campaign
+- [ ] estimate
+- [ ] efficiency
+- [ ] simulation
+
 ### Economy
-efficiency
-energy
-mineral
-trade
-economics
+- [ ] efficiency
+- [ ] energy
+- [ ] mineral
+- [ ] trade
+- [ ] economics
+
 ### Epochs
-expansion
-prediction
+- [ ] expansion
+- [ ] prediction
+
 ### Goals
-attack.room
-build.defenses
-defend.room
-dismantle.room
-mine.resources
-patrol.room [is this needed?]
-scout.room
-suppress.keepers
-transport.resources
-upgrade.controller
+- [ ] attack.room
+- [ ] build.defenses
+- [ ] defend.room
+- [ ] dismantle.room
+- [ ] mine.resources
+- [ ] scout.room
+- [ ] suppress.keepers
+- [ ] transport.resources
+- [ ] upgrade.controller
+
 ### Opponents
-prediction
-estimate
-efficiency
+- [ ] prediction
+- [ ] estimate
+- [ ] efficiency
+
 ### Tasks
-attack.id
-attack.target
-boost
-dismantle
-dropoff
-follow
-harvest.energy
-harvest.mineral
-heal
-move.find
-move.pos
-move.room
-move.xy
-pickup
-suppress.lair
-wait
+- [ ] attack.id
+- [ ] attack.target
+- [ ] upgrade
+- [ ] dismantle
+- [ ] dropoff
+- [ ] follow
+- [ ] harvest.energy
+- [ ] harvest.mineral
+- [ ] heal
+- [ ] move.find
+- [ ] move.pos
+- [ ] move.room
+- [ ] move.xy
+- [ ] pickup
+- [ ] suppress.lair
+- [ ] wait
+
 ### Terrain
-analysis.node
-analysis.node
+- [ ] analysis.node
+- [ ] analysis.node
+
 ### Utilities
-analysis.cpu
-report.console
-log.console
+- [ ] analysis.cpu
+- [ ] report.console
+- [ ] log.console
