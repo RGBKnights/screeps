@@ -1,7 +1,7 @@
 # screeps-starter
 
-> Hive AI [TypeScript](http://www.typescriptlang.org/)-based [Screeps](https://screeps.com/) AI codes.
-
+> Hive AI [TypeScript](http://www.typescriptlang.org/) based [Screeps](https://screeps.com/) AI code.
+>> A detailed description of the hive below.
 
 ## Getting Started
 
@@ -34,33 +34,13 @@ You can also use `deploy-prod` instead of `deploy` for a bundled version of the 
 
 ## The Hive
 
-### Building
-- [ ] farm
-- [ ] industry [This is worng name for labs]
-- [ ] mine
-- [ ] port
-- [ ] road
-- [ ] tower
-- [ ] wall
-
-### Combat
-- [ ] squad
-- [ ] army
-- [ ] campaign
-- [ ] estimate
-- [ ] efficiency
-- [ ] simulation
-
-### Economy
-- [ ] efficiency
-- [ ] energy
-- [ ] mineral
-- [ ] trade
-- [ ] economics
-
-### Epochs
-- [ ] expansion
-- [ ] prediction
+### Civilization
+- [ ] manager.goals
+- [ ] manager.population
+- [ ] manager.construction
+- [ ] manager.workforce
+- [ ] manager.combat
+- [ ] manager.market
 
 ### Goals
 - [ ] attack.room
@@ -73,11 +53,6 @@ You can also use `deploy-prod` instead of `deploy` for a bundled version of the 
 - [ ] transport.resources
 - [ ] upgrade.controller
 
-### Opponents
-- [ ] prediction
-- [ ] estimate
-- [ ] efficiency
-
 ### Tasks
 - [ ] attack.id
 - [ ] attack.target
@@ -87,6 +62,7 @@ You can also use `deploy-prod` instead of `deploy` for a bundled version of the 
 - [ ] follow
 - [ ] harvest.energy
 - [ ] harvest.mineral
+- [ ] harvest.power
 - [ ] heal
 - [ ] move.find
 - [ ] move.pos
@@ -96,11 +72,50 @@ You can also use `deploy-prod` instead of `deploy` for a bundled version of the 
 - [ ] suppress.lair
 - [ ] wait
 
-### Terrain
-- [ ] analysis.node
-- [ ] analysis.node
+### Building
+- [ ] farm - defines the template and rules for placment [60]
+- [ ] lab.military - keeps a moblie lab moving with the front lines to boost creeps that have been renewed after a death march
+- [ ] lab.refineries - defines the template and rules for placment
+- [ ] mine.energy - defines the template and rules for placment
+- [ ] mine.mineral - defines the template and rules for placment
+- [ ] mine.power - defines the template and rules for placment
+- [ ] port - defines the template and rules for placment [1]
+- [ ] road - uses route data to build roads on popular routes
+- [ ] wall - uses node data to build ramparts and walls at hud nodes (muiple inputs and outputs)
+- [ ] tower - defines the template and rules for placement [6]
+
+### Combat
+- [ ] squad - a small collection of units to accomplish a specific goal
+- [ ] army - a collection of squads to conquer a room
+- [ ] campaign - a army's attempt at capturing a room used for historical review and planning of new offences
+- [ ] defcon - model a room's hostile activity to defencive preparance
+- [ ] estimate - model an opponents combat strength
+- [ ] efficiency - model unit, squad, and army efficiency used for tweets to body parts, model which boosts to apply, range vs mele raito, and death march
+- [ ] simulation - model the outcome of an engagement between armies
+
+### Economy
+- [ ] efficiency - model energy, mineral, power efficiency in harvest
+- [ ] energy - manages supply and demand for energy
+- [ ] mineral - manages supply and demand for minerals
+- [ ] power - find power sources, creates goals to harvest
+- [ ] trade - creates deals on the market based on economics
+- [ ] economics - analysis opponents markets to gauge supply and demand trends combined our economy
+
+### Epochs
+- [ ] levels - handles room progression moving from up the levels with transition steps {0 to 14} [ref](https://github.com/kasami/mastermind/blob/master/src/enums/roomlevel.ts)
+- [ ] prediction - handles the prediction of opponents epochs
+
+### Opponents
+- [ ] diplomacy.combat - track past interactions with opponents to prediction future ones
+- [ ] diplomacy.market - track market activity to gauge opponents supply and demand trends for economic modeling and planing trading
+
+### Map
+- [ ] map.nodes - create node maps for use in setup up nests, planning defences, marshalling troops, finding choke points, planning ambushes
+- [ ] map.influence - for death, danager, buildings.
+- [ ] map.terrain - move calculations based on body parts and tearin weighting to determine fatigue
+- [ ] map.routes - tracks popular routes for road building
 
 ### Utilities
-- [ ] analysis.cpu
-- [ ] report.console
-- [ ] log.console
+- [ ] analysis.cpu - allow for the tracking and reporting of cpu usage used for efficiency analysis
+- [ ] report.console - report the state of the hive as a summary to the console
+- [ ] log.console - screps logging framwork (Find One or Build One)
