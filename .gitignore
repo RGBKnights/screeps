@@ -40,3 +40,9 @@ jspm_packages
 .tscache
 typings
 dist
+
+# Rollup
+.rpt2_cache
+
+# Screeps
+screeps.json

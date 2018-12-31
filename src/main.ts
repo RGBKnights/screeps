@@ -1,15 +1,14 @@
-/// <reference path="../typings/index.d.ts" />
-"use strict";
+import { ErrorMapper } from "utils/ErrorMapper";
 
-// import * as _ from "lodash";
+// When compiling TS to JS and bundling with rollup, the line numbers and file names in error messages change
+// This utility uses source maps to get the line numbers and file names of the original, TS source code
+export const loop = ErrorMapper.wrapLoop(() => {
+  console.log(`Current game tick is ${Game.time}`);
 
-let hive = require("hive");
-
-module.exports.loop = function () {
-
-    // Cleanup hive
-    hive.reset();
-    hive.createWorkers(5);
-    hive.processTowers();
-    hive.processWorkers();
-};
+  // Automatically delete memory of missing creeps
+  for (const name in Memory.creeps) {
+    if (!(name in Game.creeps)) {
+      delete Memory.creeps[name];
+    }
+  }
+});
